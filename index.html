@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>終極密碼</title>
+</head>
+
+<body class="bg-dark">
+    <div class="container col-lg-5">
+        <p class="h1 text-white text-center mt-4">終極密碼</p>
+        <p id="range" class="h2 text-white text-center mt-4">0~100</p>
+        <p id="displaynumber" class="h2 text-muted text-center font-weight-normal mt-4">0</p>
+        <div class="text-center">
+            <button id="Startgame" type="button"
+                class="btn btn-dark border border-white font-weight-bold btn-lg">開始遊戲</button>
+            <button id="Restgame" type="button"
+                class="btn btn-dark border border-white font-weight-bold btn-lg">重新開始</button>
+        </div>
+        <div class="row d-flex justify-content-around mt-5">
+            <button type="button" class="btn btn-dark border border-white font-weight-bold btn-lg col-3 input-pad"
+                value="7">7</button>
+            <button type="button" class="btn btn-dark border border-white font-weight-bold btn-lg col-3 input-pad"
+                value="8">8</button>
+            <button type="button" class="btn btn-dark border border-white font-weight-bold btn-lg col-3 input-pad"
+                value="9">9</button>
+        </div>
+        <div class="row d-flex justify-content-around mt-3">
+            <button type="button" class="btn btn-dark border border-white font-weight-bold btn-lg col-3 input-pad"
+                value="4">4</button>
+            <button type="button" class="btn btn-dark border border-white font-weight-bold btn-lg col-3 input-pad"
+                value="5">5</button>
+            <button type="button" class="btn btn-dark border border-white font-weight-bold btn-lg col-3 input-pad"
+                value="6">6</button>
+        </div>
+        <div class="row d-flex justify-content-around mt-3">
+            <button type="button" class="btn btn-dark border border-white font-weight-bold btn-lg col-3 input-pad"
+                value="1">1</button>
+            <button type="button" class="btn btn-dark border border-white font-weight-bold btn-lg col-3 input-pad"
+                value="2">2</button>
+            <button type="button" class="btn btn-dark border border-white font-weight-bold btn-lg col-3 input-pad"
+                value="3">3</button>
+        </div>
+        <div class="row d-flex justify-content-around mt-3">
+            <button id="Delete" type="button"
+                class="btn btn-danger border border-white font-weight-bold btn-lg col-3">Delete</button>
+            <button type="button" class="btn btn-dark border border-white font-weight-bold btn-lg col-3 input-pad"
+                value="0">0</button>
+            <button id="Submit" type="button"
+                class="btn btn-success border border-white font-weight-bold btn-lg col-3">Submit</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        var randomNumber;
+        var displaynumber = document.getElementById("displaynumber");
+        var numbervalue = document.getElementsByClassName("input-pad");
+        var startgame = document.getElementById("Startgame");
+        startgame.onclick = Startgame;
+        var numberSwitch = true;
+        function Startgame() {
+            for (var i = 0; i < numbervalue.length; i++) {
+                numbervalue[i].onclick = number;
+            }
+            document.getElementById("Submit").onclick = Submit;
+            document.getElementById("Delete").onclick = Delete;
+            document.getElementById("Restgame").onclick = Restgame;
+            randomNumber = Math.floor(Math.random() * 100);
+            bottomNumber = 0;
+            topNumber = 100;
+            startgame.onclick = null;
+        }
+        function Restgame() {
+            bottomNumber = 0;
+            topNumber = 100;
+            randomNumber = Math.floor(Math.random() * 100);
+            numberSwitch = true;
+            displaynumber.textContent = 0;
+        }
+        function number() {
+            if (numberSwitch == true) {
+                displaynumber.textContent = null;
+            }
+            var a = this.value;
+            displaynumber.innerText += a;
+            numberSwitch = false;
+        }
+        function Submit() {
+            if (displaynumber.textContent > topNumber) {
+                displaynumber.innerText = topNumber;
+            }
+            else if (displaynumber.textContent < bottomNumber) {
+                displaynumber.innerText = bottomNumber;
+            }
+            var range = document.getElementById("range");
+            var a = Number(displaynumber.textContent);
+            if (a == randomNumber) {
+                alert('恭喜你答對了! 答案是'+randomNumber)
+                bottomNumber = 0;
+                topNumber = 100;
+                numberSwitch = true;
+                displaynumber.textContent = 0;
+                for (var i = 0; i < numbervalue.length; i++) {
+                    numbervalue[i].onclick = null;
+                }
+                document.getElementById("Submit").onclick = null;
+                document.getElementById("Delete").onclick = null;
+                document.getElementById("Restgame").onclick = null;
+                startgame.onclick = Startgame;
+            } else if (a > randomNumber) {
+                topNumber = a;
+            } else if (a < randomNumber) {
+                bottomNumber = a;
+            }
+            range.textContent = bottomNumber + "~" + topNumber;
+            numberSwitch = true;
+        }
+        function Delete() {
+            numberSwitch = true;
+            displaynumber.textContent = 0;
+        }
+    </script>
+</body>
+
+</html>
